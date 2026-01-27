@@ -1642,6 +1642,7 @@
   border-radius: 3px;
   font-size: 0.95em;
   user-select: all;
+  text-transform: none;
 }
 .single-plugin-card .entry-main aside .ratings,
 .single-theme-card .entry-main aside .ratings {

@@ -571,7 +571,7 @@ class AssetInfo {
 	 * @return array|false Data array if fair, false if not.
 	 */
 	public function get_fair_data() {
-		return is_array( $this->_fair ) && ( 0 < count( $this->_fair ) ) ? $this->_fair : false;
+		return is_object( $this->_fair ) ? $this->_fair : false;
 	}
 
 	/**
@@ -588,11 +588,11 @@ class AssetInfo {
 			return false;
 		}
 
-		if ( empty( $fair_data['id'] ) ) {
+		if ( empty( $fair_data->id ) ) {
 			return false;
 		}
 
 		// Is this a fake bridged plugin?
-		return str_starts_with( $fair_data['id'], 'did:' );
+		return str_starts_with( $fair_data->id, 'did:' );
 	}
 }
