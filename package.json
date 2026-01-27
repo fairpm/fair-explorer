@@ -1,6 +1,6 @@
 {
   "name": "fair-explorer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Fair Explorer Repository browser.",
   "scripts": {
     "build-css": "npx sass assets/css/fair-explorer.scss assets/css/fair-explorer.css",
