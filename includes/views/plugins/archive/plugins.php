@@ -11,7 +11,7 @@ $total_pages      = $args['total_pages'] ?? 1;
 			<?php
 			printf(
 				/* translators: %s: number of plugins found */
-				esc_html( _n( '%s Plugin Found.', '%s Plugins Found.', $total_results, 'aspireexplorer' ) ),
+				esc_html( _n( '%s Plugin Found.', '%s Plugins Found.', $total_results, 'fair-explorer' ) ),
 				esc_html( $total_results )
 			);
 			?>
@@ -25,7 +25,7 @@ $total_pages      = $args['total_pages'] ?? 1;
 						'%s plugin found in the results list below.',
 						'%s plugins found in the results list below.',
 						$total_results,
-						'aspireexplorer'
+						'fair-explorer'
 					)
 				),
 				esc_html( $total_results )
@@ -36,8 +36,8 @@ $total_pages      = $args['total_pages'] ?? 1;
 	<ul class="plugin-results" role="list">
 		<?php
 		foreach ( $plugins_result as $plugin_result ) {
-			$plugin_info = new \AspireExplorer\Model\PluginInfo( $plugin_result );
-			\AspireExplorer\Controller\Utilities::include_file(
+			$plugin_info = new \FairExplorer\Model\PluginInfo( $plugin_result );
+			\FairExplorer\Controller\Utilities::include_file(
 				'plugins' . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . 'plugin.php',
 				[
 					'target_page_slug' => $target_page_slug,

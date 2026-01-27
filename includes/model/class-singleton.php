@@ -5,7 +5,7 @@
  * Inherit the Singleton pattern to yuur classes seamlessly.
  */
 
-namespace AspireExplorer\Model;
+namespace FairExplorer\Model;
 
 abstract class Singleton {
 
@@ -27,14 +27,14 @@ abstract class Singleton {
 	 * Prevent cloning.
 	 */
 	final public function __clone() {
-		return new \WP_Error( 'singleton_clone_error', __( 'Cloning a singleton is not allowed.', 'aspireexplorer' ) );
+		return new \WP_Error( 'singleton_clone_error', __( 'Cloning a singleton is not allowed.', 'fair-explorer' ) );
 	}
 
 	/**
 	 * Prevent unserialization.
 	 */
 	final public function __wakeup() {
-		return new \WP_Error( 'singleton_unserialize_error', __( 'Unserializing a singleton is not allowed.', 'aspireexplorer' ) );
+		return new \WP_Error( 'singleton_unserialize_error', __( 'Unserializing a singleton is not allowed.', 'fair-explorer' ) );
 	}
 
 	/**

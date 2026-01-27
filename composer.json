@@ -1,11 +1,11 @@
 {
-	"name": "aspirepress/aspireexplorer",
-	"description": "AspirePress Repository browser.",
+	"name": "fairpm/fair-explorer",
+	"description": "Fair Explorer Repository browser.",
 	"type": "wordpress-plugin",
 	"license": "GPLv2",
 	"authors": [
 		{
-			"name": "AspirePress"
+			"name": "FairPM"
 		}
 	],
 	"require": {
@@ -25,7 +25,7 @@
 	"scripts": {
 		"format": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --report=summary,source",
 		"lint": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --report=summary,source",
-		"scss-watch": "sass --watch assets/css/aspire-explorer.scss:assets/css/aspire-explorer.css"
+		"scss-watch": "sass --watch assets/css/fair-explorer.scss:assets/css/fair-explorer.css"
 	},
 	"minimum-stability": "stable",
 	"prefer-stable": true

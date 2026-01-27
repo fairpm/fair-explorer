@@ -1,4 +1,4 @@
-# gitignore files for Aspire Update
+# gitignore files for Fair Explorer
 
 # Files and folders related to build and test tools.
 .phpunit.result.cache

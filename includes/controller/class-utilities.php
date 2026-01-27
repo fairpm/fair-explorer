@@ -2,10 +2,10 @@
 /**
  * The Class for Miscellaneous Helper Functions.
  *
- * @package aspire-explorer
+ * @package fair-explorer
  */
 
-namespace AspireExplorer\Controller;
+namespace FairExplorer\Controller;
 
 /**
  * The Class for Miscellaneous Helper Functions.
@@ -19,11 +19,11 @@ class Utilities {
 	 */
 	public static function include_file( $file, $args = [] ) {
 		// First, check in the child theme (if active)
-		$theme_file_path = get_stylesheet_directory() . DIRECTORY_SEPARATOR . 'aspireexplorer' . DIRECTORY_SEPARATOR . $file;
+		$theme_file_path = get_stylesheet_directory() . DIRECTORY_SEPARATOR . 'fair-explorer' . DIRECTORY_SEPARATOR . $file;
 
 		// If not found in child theme, check parent theme
 		if ( ! file_exists( $theme_file_path ) && get_template_directory() !== get_stylesheet_directory() ) {
-			$theme_file_path = get_template_directory() . DIRECTORY_SEPARATOR . 'aspireexplorer' . DIRECTORY_SEPARATOR . $file;
+			$theme_file_path = get_template_directory() . DIRECTORY_SEPARATOR . 'fair-explorer' . DIRECTORY_SEPARATOR . $file;
 		}
 
 		// If found in theme, use that file
@@ -41,7 +41,7 @@ class Utilities {
 			//phpcs:enable
 			include $file_path;
 		} else {
-			wp_die( esc_html( __( 'Aspire Explorer Error: Template File not found', 'aspire-explorer' ) . ' - ' . $file_path ) );
+			wp_die( esc_html( __( 'Fair-Explorer Error: Template File not found', 'fair-explorer' ) . ' - ' . $file_path ) );
 		}
 	}
 }
