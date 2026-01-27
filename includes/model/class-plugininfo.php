@@ -158,7 +158,7 @@ class PluginInfo extends AssetInfo {
 	 * @return string|null The best icon URL or null.
 	 */
 	public function get_best_icon() {
-		foreach ( [ 'svg', '2x', '1x' ] as $size ) {
+		foreach ( [ 'svg', '2x', '1x', 'default' ] as $size ) {
 			$icon = $this->get_icons( $size );
 			if ( $icon && filter_var( $icon, FILTER_VALIDATE_URL ) ) {
 				return $icon;
