@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var FairExplorer\Model\PluginInfo plugin_info.
+ * @var FairExplorer\Model\PluginInfo $plugin_info.
  */
 $plugin_info = $args['plugin_info'] ?? [];
 
@@ -26,7 +26,7 @@ if ( isset( $sections['description'] ) ) {
 
 $fair_data = $plugin_info->get_fair_data();
 if ( $plugin_info->is_fair_plugin() ) {
-	$plugin_did = esc_attr( $fair_data['id'] );
+	$plugin_did = esc_attr( $fair_data->id );
 }
 ?>
 <div class="single-plugin-card">

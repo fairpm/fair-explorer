@@ -15,7 +15,7 @@ if ( empty( $plugin_icon ) ) {
 
 $fair_data = $plugin_info->get_fair_data();
 if ( $plugin_info->is_fair_plugin() ) {
-	$plugin_did = esc_attr( $fair_data['id'] );
+	$plugin_did = esc_attr( $fair_data->id );
 }
 ?>
 <li class="plugin-card <?php echo ( $plugin_info->is_fair_plugin() ) ? 'fair' : ''; ?>">
