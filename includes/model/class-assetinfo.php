@@ -1,6 +1,6 @@
 <?php
 
-namespace AspireExplorer\Model;
+namespace FairExplorer\Model;
 
 /**
  * Class AssetInfo

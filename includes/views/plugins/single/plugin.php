@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var AspireExplorer\Model\PluginInfo plugin_info.
+ * @var FairExplorer\Model\PluginInfo plugin_info.
  */
 $plugin_info = $args['plugin_info'] ?? [];
 
@@ -39,7 +39,7 @@ if ( $plugin_info->is_fair_plugin() ) {
 			<p class="plugin-author">by <?php echo esc_html( $plugin_info->get_author( 'display_name' ) ); ?></p>
 			<?php
 			if ( $plugin_info->is_fair_plugin() ) {
-				echo '<p class="plugin-fair">' . esc_html__( 'This plugin is available via FAIR repository.', 'aspireexplorer' ) . '</p>';
+				echo '<p class="plugin-fair">' . esc_html__( 'This plugin is available via FAIR repository.', 'fair-explorer' ) . '</p>';
 			}
 			?>
 		</div>
@@ -87,7 +87,7 @@ if ( $plugin_info->is_fair_plugin() ) {
 			}
 			?>
 		</article>
-		<aside aria-label="<?php esc_attr_e( 'Plugin Metadata', 'aspireexplorer' ); ?>">
+		<aside aria-label="<?php esc_attr_e( 'Plugin Metadata', 'fair-explorer' ); ?>">
 			<ul>
 				<?php
 				if ( $plugin_info->is_fair_plugin() ) {
@@ -127,7 +127,7 @@ if ( $plugin_info->is_fair_plugin() ) {
 				$average = $total > 0 ? round( $sum / $total, 1 ) : 0;
 				?>
 				<div class="rating-summary">
-					<strong><span class="screen-reader-text"><?php echo esc_html__( 'Average rating:', 'aspireexplorer' ); ?></span><?php echo esc_html( $average ); ?> <?php echo esc_html__( 'out of 5 stars.', 'aspireexplorer' ); ?></strong>
+					<strong><span class="screen-reader-text"><?php echo esc_html__( 'Average rating:', 'fair-explorer' ); ?></span><?php echo esc_html( $average ); ?> <?php echo esc_html__( 'out of 5 stars.', 'fair-explorer' ); ?></strong>
 				</div>
 				<ul class="ratings-list">
 					<?php
@@ -138,7 +138,7 @@ if ( $plugin_info->is_fair_plugin() ) {
 							echo '<span class="dashicons dashicons-star' . ( $j <= $i ? '-filled' : '-empty' ) . '" aria-hidden="true"></span>';
 						}
 						echo '<span class="rating-bar"><span class="rating-bar-inner" style="width:' . ( $total > 0 ? esc_attr( round( ( $count / $total ) * 100 ) ) : 0 ) . '%"></span></span>';
-						echo '<span class="rating-absolute"><span class="screen-reader-text">' . esc_html__( 'Number of ratings:', 'aspireexplorer' ) . ' </span>' . esc_html( $count ) . ' ' . esc_html__( 'ratings', 'aspireexplorer' ) . '</span>';
+						echo '<span class="rating-absolute"><span class="screen-reader-text">' . esc_html__( 'Number of ratings:', 'fair-explorer' ) . ' </span>' . esc_html( $count ) . ' ' . esc_html__( 'ratings', 'fair-explorer' ) . '</span>';
 						echo '</li>';
 					}
 					?>

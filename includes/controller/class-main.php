@@ -5,11 +5,11 @@
  * The Main Workflow Controller for the Plugin.
  */
 
-namespace AspireExplorer\Controller;
+namespace FairExplorer\Controller;
 
 use PHPCSStandards\Composer\Plugin\Installers\PHPCodeSniffer\Plugin;
 
-class Main extends \AspireExplorer\Model\Singleton {
+class Main extends \FairExplorer\Model\Singleton {
 	/**
 	 * Constructor.
 	 */
@@ -23,16 +23,16 @@ class Main extends \AspireExplorer\Model\Singleton {
 	public function wp_enqueue_scripts() {
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style(
-			'aspire-explorer-styles',
-			AE_DIR_URL . 'assets/css/aspire-explorer.css',
+			'fair-explorer-styles',
+			AE_DIR_URL . 'assets/css/fair-explorer.css',
 			[],
-			filemtime( AE_DIR_PATH . '/assets/css/aspire-explorer.css' )
+			filemtime( AE_DIR_PATH . '/assets/css/fair-explorer.css' )
 		);
 		wp_enqueue_script(
-			'aspire-explorer-scripts',
-			AE_DIR_URL . 'assets/js/aspire-explorer.js',
+			'fair-explorer-scripts',
+			AE_DIR_URL . 'assets/js/fair-explorer.js',
 			[ 'jquery' ],
-			filemtime( AE_DIR_PATH . '/assets/js/aspire-explorer.js' ),
+			filemtime( AE_DIR_PATH . '/assets/js/fair-explorer.js' ),
 			true
 		);
 	}

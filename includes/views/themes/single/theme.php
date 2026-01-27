@@ -1,10 +1,10 @@
 <?php
 /**
- * AspireExplorer Theme Card (Single View)
+ * FairExplorer Theme Card (Single View)
  *
  * Displays a single theme's details, sections, meta, and ratings in an accessible, translatable, and visually polished layout.
  *
- * @package AspireExplorer
+ * @package FairExplorer
  */
 $theme_info = $args['theme_info'] ?? null;
 if ( ! $theme_info ) {
@@ -45,15 +45,15 @@ if ( isset( $sections['description'] ) ) {
 			$preview_url = '';
 			if ( $theme_slug ) {
 				$theme_zip_url = $theme_info->get_download_link();
-				$preview_url   = AspireExplorer\Controller\Playground::get_playground_url( [ 'theme' => $theme_zip_url ] );
+				$preview_url   = FairExplorer\Controller\Playground::get_playground_url( [ 'theme' => $theme_zip_url ] );
 			}
 			?>
 			<a href="<?php echo esc_url( $preview_url ); ?>" class="button button-primary" target="_blank" rel="noopener noreferrer">
-				<span class="dashicons dashicons-visibility"></span> <?php esc_html_e( 'Preview', 'aspireexplorer' ); ?>
+				<span class="dashicons dashicons-visibility"></span> <?php esc_html_e( 'Preview', 'fair-explorer' ); ?>
 			</a>
 		</div>
 		<div class="entry-download">
-			<a href="<?php echo esc_url( $theme_info->get_download_link() ); ?>" class="button button-primary" download rel="noopener noreferrer"><span class="dashicons dashicons-download"></span> <?php esc_html_e( 'Download', 'aspireexplorer' ); ?></a>
+			<a href="<?php echo esc_url( $theme_info->get_download_link() ); ?>" class="button button-primary" download rel="noopener noreferrer"><span class="dashicons dashicons-download"></span> <?php esc_html_e( 'Download', 'fair-explorer' ); ?></a>
 		</div>
 	</header>
 	<div class="entry-main">
@@ -93,7 +93,7 @@ if ( isset( $sections['description'] ) ) {
 			}
 			?>
 		</article>
-		<aside aria-label="<?php esc_attr_e( 'Theme Metadata', 'aspireexplorer' ); ?>">
+		<aside aria-label="<?php esc_attr_e( 'Theme Metadata', 'fair-explorer' ); ?>">
 			<ul>
 				<?php
 				$meta_data = [
@@ -128,7 +128,7 @@ if ( isset( $sections['description'] ) ) {
 				$average = $total > 0 ? round( $sum / $total, 1 ) : 0;
 				?>
 				<div class="rating-summary">
-					<strong><span class="screen-reader-text"><?php echo esc_html__( 'Average rating:', 'aspireexplorer' ); ?></span><?php echo esc_html( $average ); ?> <?php echo esc_html__( 'out of 5 stars.', 'aspireexplorer' ); ?></strong>
+					<strong><span class="screen-reader-text"><?php echo esc_html__( 'Average rating:', 'fair-explorer' ); ?></span><?php echo esc_html( $average ); ?> <?php echo esc_html__( 'out of 5 stars.', 'fair-explorer' ); ?></strong>
 				</div>
 				<ul class="ratings-list">
 					<?php
@@ -139,7 +139,7 @@ if ( isset( $sections['description'] ) ) {
 							echo '<span class="dashicons dashicons-star' . ( $j <= $i ? '-filled' : '-empty' ) . '" aria-hidden="true"></span>';
 						}
 						echo '<span class="rating-bar"><span class="rating-bar-inner" style="width:' . ( $total > 0 ? esc_attr( round( ( $count / $total ) * 100 ) ) : 0 ) . '%"></span></span>';
-						echo '<span class="rating-absolute"><span class="screen-reader-text">' . esc_html__( 'Number of ratings:', 'aspireexplorer' ) . ' </span>' . esc_html( $count ) . ' ' . esc_html__( 'ratings', 'aspireexplorer' ) . '</span>';
+						echo '<span class="rating-absolute"><span class="screen-reader-text">' . esc_html__( 'Number of ratings:', 'fair-explorer' ) . ' </span>' . esc_html( $count ) . ' ' . esc_html__( 'ratings', 'fair-explorer' ) . '</span>';
 						echo '</li>';
 					}
 					?>
@@ -149,7 +149,7 @@ if ( isset( $sections['description'] ) ) {
 				<ul class="theme-tags">
 					<?php
 					foreach ( $theme_info->get_tags() as $theme_tag ) {
-						echo '<li class="theme-tag"><span class="screen-reader-text">' . esc_html__( 'Tag:', 'aspireexplorer' ) . ' </span>' . esc_html( $theme_tag ) . '</li>';
+						echo '<li class="theme-tag"><span class="screen-reader-text">' . esc_html__( 'Tag:', 'fair-explorer' ) . ' </span>' . esc_html( $theme_tag ) . '</li>';
 					}
 					?>
 				</ul>

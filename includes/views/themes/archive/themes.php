@@ -11,7 +11,7 @@ $total_pages      = $args['total_pages'] ?? 1;
 			<?php
 			printf(
 				/* translators: %s: number of themes found */
-				esc_html( _n( '%s Theme Found.', '%s Themes Found.', $total_results, 'aspireexplorer' ) ),
+				esc_html( _n( '%s Theme Found.', '%s Themes Found.', $total_results, 'fair-explorer' ) ),
 				esc_html( $total_results )
 			);
 			?>
@@ -25,7 +25,7 @@ $total_pages      = $args['total_pages'] ?? 1;
 						'%s theme found in the results list below.',
 						'%s themes found in the results list below.',
 						$total_results,
-						'aspireexplorer'
+						'fair-explorer'
 					)
 				),
 				esc_html( $total_results )
@@ -36,8 +36,8 @@ $total_pages      = $args['total_pages'] ?? 1;
 	<ul class="theme-results" role="list">
 		<?php
 		foreach ( $themes_result as $theme_result ) {
-			$theme_info = new \AspireExplorer\Model\ThemeInfo( $theme_result );
-			\AspireExplorer\Controller\Utilities::include_file(
+			$theme_info = new \FairExplorer\Model\ThemeInfo( $theme_result );
+			\FairExplorer\Controller\Utilities::include_file(
 				'themes' . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . 'theme.php',
 				[
 					'target_page_slug' => $target_page_slug,

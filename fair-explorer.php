@@ -1,27 +1,27 @@
 <?php
 
 /**
- * AspireExplorer - AspirePress Repository browser.
+ * Fair Explorer - Fair Explorer Repository browser.
  *
- * @package     aspire-explorer
- * @author      AspireExplorer
- * @copyright   AspireExplorer
+ * @package     fair-explorer
+ * @author      FairPM
+ * @copyright   FairPM
  * @license     GPLv2
  *
- * Plugin Name:       AspireExplorer
- * Plugin URI:        https://aspirepress.org/
- * Description:       AspirePress Repository browser.
+ * Plugin Name:       Fair Explorer
+ * Plugin URI:        https://fairpm.org/
+ * Description:       Fair Explorer Repository browser.
  * Version:           0.2.0
- * Author:            AspirePress
- * Author URI:        https://docs.aspirepress.org/aspireexplorer/
+ * Author:            FairPM
+ * Author URI:        https://fairpm.org/
  * Requires at least: 5.3
  * Requires PHP:      7.4
  * Tested up to:      6.7
  * License:           GPLv2
  * License URI:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
- * Text Domain:       aspireexplorer
+ * Text Domain:       fair-explorer
  * Domain Path:       /languages
- * GitHub Plugin URI: https://github.com/aspirepress/aspireexplorer
+ * GitHub Plugin URI: https://github.com/fairpm/fair-explorer
  * Primary Branch:    main
  */
 
@@ -43,7 +43,7 @@ add_action(
 		if ( ! defined( 'AE_DIR_PATH' ) ) {
 			define( 'AE_DIR_PATH', __DIR__ );
 		}
-		AspireExplorer\Controller\Main::get_instance();
+		FairExplorer\Controller\Main::get_instance();
 	}
 );
 
@@ -52,5 +52,5 @@ require_once __DIR__ . '/includes/autoload.php';
 /**
  * Register activation/deactivation hooks.
  */
-register_activation_hook( __FILE__, [ 'AspireExplorer\Controller\Main', 'on_activate' ] );
-register_deactivation_hook( __FILE__, [ 'AspireExplorer\Controller\Main', 'on_deactivate' ] );
+register_activation_hook( __FILE__, [ 'FairExplorer\Controller\Main', 'on_activate' ] );
+register_deactivation_hook( __FILE__, [ 'FairExplorer\Controller\Main', 'on_deactivate' ] );

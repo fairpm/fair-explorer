@@ -6,7 +6,7 @@
  * Contains common functionality shared between themes and plugins controllers.
  */
 
-namespace AspireExplorer\Controller;
+namespace FairExplorer\Controller;
 
 class Packages {
 	/**
@@ -402,7 +402,7 @@ class Packages {
 
 		ob_start();
 
-		$model_class = 'themes' === $this->asset_type ? 'AspireExplorer\Model\ThemeInfo' : 'AspireExplorer\Model\PluginInfo';
+		$model_class = 'themes' === $this->asset_type ? 'FairExplorer\Model\ThemeInfo' : 'FairExplorer\Model\PluginInfo';
 		$asset_info  = new $model_class( $this->api_response );
 
 		Utilities::include_file(
@@ -427,7 +427,7 @@ class Packages {
 			( ! isset( $_GET['ae_download'] ) && isset( $_GET['ae_package'] ) ) ||
 			( ! isset( $_GET['ae_package'] ) && isset( $_GET['ae_download'] ) )
 		) {
-			wp_die( esc_html( __( 'Aspire Explorer Error: Malformed download URL', 'aspireexplorer' ) ) );
+			wp_die( esc_html( __( 'Fair-Explorer Error: Malformed download URL', 'fair-explorer' ) ) );
 		}
 
 		if (
@@ -440,17 +440,17 @@ class Packages {
 				! isset( $_GET['ae_nonce'] ) ||
 				! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['ae_nonce'] ) ), 'ae_download_nonce' )
 			) {
-				wp_die( esc_html( __( 'Aspire Explorer Error: Unidentified download URL', 'aspireexplorer' ) ) );
+				wp_die( esc_html( __( 'Fair-Explorer Error: Unidentified download URL', 'fair-explorer' ) ) );
 			}
 
 			$asset_url = isset( $_GET['ae_download'] ) ? sanitize_text_field( wp_unslash( $_GET['ae_download'] ) ) : '';
 			$filename  = isset( $_GET['ae_package'] ) ? sanitize_text_field( wp_unslash( $_GET['ae_package'] ) ) : '';
 			if ( '' === $asset_url ) {
-				wp_die( esc_html( __( 'Aspire Explorer Error: Missing download URL', 'aspireexplorer' ) ) );
+				wp_die( esc_html( __( 'Fair-Explorer Error: Missing download URL', 'fair-explorer' ) ) );
 			}
 
 			if ( ! filter_var( $asset_url, FILTER_VALIDATE_URL ) ) {
-				wp_die( esc_html( __( 'Aspire Explorer Error: Invalid download URL', 'aspireexplorer' ) ) );
+				wp_die( esc_html( __( 'Fair-Explorer Error: Invalid download URL', 'fair-explorer' ) ) );
 			}
 
 			$accept_header = 'application/octet-stream';
@@ -470,15 +470,15 @@ class Packages {
 				]
 			);
 			if ( is_wp_error( $response ) ) {
-				wp_die( esc_html( __( 'Aspire Explorer Error: Unable to download the file. Please try again later.', 'aspireexplorer' ) ) );
+				wp_die( esc_html( __( 'Fair-Explorer Error: Unable to download the file. Please try again later.', 'fair-explorer' ) ) );
 			}
 			$code = wp_remote_retrieve_response_code( $response );
 			if ( 200 !== $code ) {
-				wp_die( esc_html( __( 'Aspire Explorer Error: Unable to download the file. Please try again later.', 'aspireexplorer' ) . ' (HTTP Code: ' . esc_html( $code ) . ')' ) );
+				wp_die( esc_html( __( 'Fair-Explorer Error: Unable to download the file. Please try again later.', 'fair-explorer' ) . ' (HTTP Code: ' . esc_html( $code ) . ')' ) );
 			}
 			$body = wp_remote_retrieve_body( $response );
 			if ( empty( $body ) ) {
-				wp_die( esc_html( __( 'Aspire Explorer Error: Downloaded file is empty.', 'aspireexplorer' ) ) );
+				wp_die( esc_html( __( 'Fair-Explorer Error: Downloaded file is empty.', 'fair-explorer' ) ) );
 			}
 
 			// Get file extension from response headers

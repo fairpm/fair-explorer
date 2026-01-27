@@ -2,7 +2,7 @@
 /**
  * The Autoloader.
  *
- * @package aspire-explorer
+ * @package fair-explorer
  */
 
 /**
@@ -13,7 +13,7 @@
  */
 spl_autoload_register(
 	function ( $class_identifier ) {
-		$prefix   = 'AspireExplorer\\';
+		$prefix   = 'FairExplorer\\';
 		$base_dir = __DIR__ . DIRECTORY_SEPARATOR;
 
 		if ( strpos( $class_identifier, $prefix ) !== 0 ) {

@@ -6,19 +6,19 @@
  * Handles REST API endpoints for generating WordPress Playground blueprints.
  */
 
-namespace AspireExplorer\Controller;
+namespace FairExplorer\Controller;
 
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 use Exception;
 
-class Playground extends \AspireExplorer\Model\Singleton {
+class Playground extends \FairExplorer\Model\Singleton {
 
 	/**
 	 * REST API namespace
 	 */
-	const API_NAMESPACE = 'aspireexplorer/v1';
+	const API_NAMESPACE = 'fair-explorer/v1';
 
 	/**
 	 * REST API endpoint

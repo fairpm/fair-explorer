@@ -1,6 +1,6 @@
-# AspireExplorer
+# Fair-Explorer
 
-A WordPress plugin that provides a comprehensive repository browser for exploring and managing WordPress plugins and themes from the AspirePress ecosystem.
+A WordPress plugin that provides a comprehensive repository browser for exploring and managing WordPress plugins and themes from the FAIR ecosystem.
 
 ## Features
 
@@ -18,19 +18,19 @@ A WordPress plugin that provides a comprehensive repository browser for explorin
 ## Installation
 
 1. Download or clone this repository
-2. Place the `aspireexplorer` folder in your `/wp-content/plugins/` directory
+2. Place the `fair-explorer` folder in your `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 4. Create pages with slugs `plugins` and `themes` for the archive pages
 
 ## Template Hierarchy & Customization
 
-AspireExplorer supports WordPress template hierarchy, allowing themes to override plugin templates:
+Fair-Explorer supports WordPress template hierarchy, allowing themes to override plugin templates:
 
 ### Template Override Order
 
-1. **Child Theme** (highest priority): `wp-content/themes/child-theme/aspireexplorer/[template-file]`
-2. **Parent Theme**: `wp-content/themes/active-theme/aspireexplorer/[template-file]`  
-3. **Plugin Default** (fallback): `wp-content/plugins/aspireexplorer/includes/view/[template-file]`
+1. **Child Theme** (highest priority): `wp-content/themes/child-theme/fair-explorer/[template-file]`
+2. **Parent Theme**: `wp-content/themes/active-theme/fair-explorer/[template-file]`  
+3. **Plugin Default** (fallback): `wp-content/plugins/fair-explorer/includes/view/[template-file]`
 
 ### Available Templates
 
@@ -52,9 +52,9 @@ You can override these template files in your theme:
 
 To customize the themes listing in your theme:
 
-1. Create folder: `wp-content/themes/your-theme/aspireexplorer/`
-2. Copy: `wp-content/plugins/aspireexplorer/includes/view/archive/themes.php`
-3. Paste to: `wp-content/themes/your-theme/aspireexplorer/archive/themes.php`
+1. Create folder: `wp-content/themes/your-theme/fair-explorer/`
+2. Copy: `wp-content/plugins/fair-explorer/includes/view/archive/themes.php`
+3. Paste to: `wp-content/themes/your-theme/fair-explorer/archive/themes.php`
 4. Customize as needed
 
 Your customizations will be preserved during plugin updates.
@@ -62,7 +62,7 @@ Your customizations will be preserved during plugin updates.
 ## Installation
 
 1. Download or clone this repository
-2. Place the `aspireexplorer` folder in your `/wp-content/plugins/` directory
+2. Place the `fair-explorer` folder in your `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 4. Create pages with slugs `plugins` and `themes` for the archive pages
 
@@ -97,13 +97,13 @@ With the default configuration, your URLs will be:
 - Individual: `yoursite.com/packages/themes/theme-name/`
 
 **REST API:**
-- Playground Blueprint: `yoursite.com/wp-json/aspireexplorer/v1/playground/blueprint`
+- Playground Blueprint: `yoursite.com/wp-json/fair-explorer/v1/playground/blueprint`
 
 ## REST API Endpoints
 
 ### WordPress Playground Blueprint Generator
 
-**Endpoint:** `GET /wp-json/aspireexplorer/v1/playground/blueprint`
+**Endpoint:** `GET /wp-json/fair-explorer/v1/playground/blueprint`
 
 Generate WordPress Playground blueprints for instant theme/plugin demos.
 
@@ -121,17 +121,17 @@ Generate WordPress Playground blueprints for instant theme/plugin demos.
 
 **Theme Blueprint:**
 ```bash
-GET /wp-json/aspireexplorer/v1/playground/blueprint?theme=https://example.com/theme.zip
+GET /wp-json/fair-explorer/v1/playground/blueprint?theme=https://example.com/theme.zip
 ```
 
 **Plugin Blueprint:**
 ```bash
-GET /wp-json/aspireexplorer/v1/playground/blueprint?plugin=https://example.com/plugin.zip
+GET /wp-json/fair-explorer/v1/playground/blueprint?plugin=https://example.com/plugin.zip
 ```
 
 **Combined Theme + Plugin:**
 ```bash
-GET /wp-json/aspireexplorer/v1/playground/blueprint?theme=https://example.com/theme.zip&plugin=https://example.com/plugin.zip&landing_page=/demo
+GET /wp-json/fair-explorer/v1/playground/blueprint?theme=https://example.com/theme.zip&plugin=https://example.com/plugin.zip&landing_page=/demo
 ```
 
 #### Response Format
@@ -174,7 +174,7 @@ Returns a JSON blueprint compatible with WordPress Playground:
 ### Code Structure
 
 ```
-aspireexplorer/
+fair-explorer/
 ├── includes/
 │   ├── controller/          # MVC Controllers
 │   │   ├── class-main.php      # Main plugin controller
@@ -197,14 +197,14 @@ aspireexplorer/
 │   └── autoload.php           # PSR-4 autoloader
 ├── assets/
 │   ├── js/
-│   │   └── aspire-explorer.js    # Main JavaScript (ES6 classes)
+│   │   └── fair-explorer.js    # Main JavaScript (ES6 classes)
 │   ├── scss/
-│   │   ├── aspire-explorer.scss  # Main SCSS file
+│   │   ├── fair-explorer.scss  # Main SCSS file
 │   │   ├── _cart.scss           # Cart styling
 │   │   ├── _lightbox.scss       # Lightbox component
 │   │   └── _search.scss         # Search components
 │   └── css/
-│       └── aspire-explorer.css   # Compiled CSS
+│       └── fair-explorer.css   # Compiled CSS
 └── composer.json           # PHP dependencies and scripts
 ```
 
@@ -272,12 +272,12 @@ The cart system allows users to collect packages for later reference:
 ### Template Issues
 
 **Templates Not Loading:**
-1. Check file permissions on theme `aspireexplorer` folder
+1. Check file permissions on theme `fair-explorer` folder
 2. Ensure template files follow exact naming convention
 3. Clear any caching plugins
 
 **Template Hierarchy Not Working:**
-1. Verify theme has `aspireexplorer` folder in correct location
+1. Verify theme has `fair-explorer` folder in correct location
 2. Check file names match exactly (case-sensitive)
 3. Ensure WordPress functions `get_template_directory()` and `get_stylesheet_directory()` work
 
@@ -344,4 +344,4 @@ This project is licensed under the GPL v2 or later - see the WordPress plugin he
 
 ## Support
 
-For support and bug reports, please use the GitHub issue tracker or contact the AspirePress team.
+For support and bug reports, please use the GitHub issue tracker or contact the FAIR team.

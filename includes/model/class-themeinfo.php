@@ -1,5 +1,5 @@
 <?php
-namespace AspireExplorer\Model;
+namespace FairExplorer\Model;
 
 /**
  * Class ThemeInfo

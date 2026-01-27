@@ -1,10 +1,10 @@
 {
-  "name": "aspire-explorer",
+  "name": "fair-explorer",
   "version": "0.2.0",
-  "description": "AspirePress Repository browser.",
+  "description": "Fair Explorer Repository browser.",
   "scripts": {
-    "build-css": "npx sass assets/css/aspire-explorer.scss assets/css/aspire-explorer.css",
-    "scss-watch": "npx sass --watch assets/css/aspire-explorer.scss:assets/css/aspire-explorer.css"
+    "build-css": "npx sass assets/css/fair-explorer.scss assets/css/fair-explorer.css",
+    "scss-watch": "npx sass --watch assets/css/fair-explorer.scss:assets/css/fair-explorer.css"
   },
   "devDependencies": {
     "onchange": "^7.1.0",
