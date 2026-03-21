@@ -165,6 +165,34 @@ class AssetInfo {
 	protected $banners;
 
 	/**
+	 * Icon URLs (keys may include '1x', '2x', 'svg').
+	 *
+	 * @var array
+	 */
+	protected $icons;
+
+	/**
+	 * Optional repository url (if provided).
+	 *
+	 * @var string|null
+	 */
+	protected $repository_url;
+
+	/**
+	 * Optional commercial support url (if provided).
+	 *
+	 * @var string|null
+	 */
+	protected $commercial_support_url;
+
+	/**
+	 * Optional donation link (if provided).
+	 *
+	 * @var string|null
+	 */
+	protected $donate_link;
+
+	/**
 	 * Asset origin (source or API origin).
 	 *
 	 * @var string|null
@@ -313,6 +341,19 @@ class AssetInfo {
 			return is_string( $clean ) && '' !== $clean && trim( $clean ) !== '' ? trim( $clean ) : null;
 		}
 		return null;
+	}
+
+	/**
+	 * Get the author display name regardless of how author data is stored.
+	 *
+	 * Plugins store author as a plain string, while themes and extensions
+	 * store it as an array with a 'display_name' key. This method normalises
+	 * both formats into a single display-ready string.
+	 *
+	 * @return string|null Author display name or null.
+	 */
+	public function get_author_display_name() {
+		return $this->get_author( 'display_name' ) ?? $this->get_author();
 	}
 
 	/**
@@ -563,6 +604,61 @@ class AssetInfo {
 			return $this->ac_created;
 		}
 		return gmdate( $format, $date );
+	}
+
+	/**
+	 * Get all icons or a specific size.
+	 *
+	 * @param string|null $size Optional: 'svg', '2x', '1x'
+	 * @return array|string|null All icons or specific.
+	 */
+	public function get_icons( $size = null ) {
+		if ( ! is_array( $this->icons ) ) {
+			return null === $size ? [] : null;
+		}
+		return null === $size ? $this->icons : ( $this->icons[ $size ] ?? null );
+	}
+
+	/**
+	 * Get the best available icon URL by priority (svg > 2x > 1x).
+	 *
+	 * @return string|null The best icon URL or null.
+	 */
+	public function get_best_icon() {
+		foreach ( [ 'svg', '2x', '1x', 'default' ] as $size ) {
+			$icon = $this->get_icons( $size );
+			if ( $icon && filter_var( $icon, FILTER_VALIDATE_URL ) ) {
+				return $icon;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get the repository url.
+	 *
+	 * @return string|null repository url or null.
+	 */
+	public function get_repository_url() {
+		return filter_var( $this->repository_url, FILTER_VALIDATE_URL ) ? $this->repository_url : null;
+	}
+
+	/**
+	 * Get the commercial support url.
+	 *
+	 * @return string|null commercial support url or null.
+	 */
+	public function get_commercial_support_url() {
+		return filter_var( $this->commercial_support_url, FILTER_VALIDATE_URL ) ? $this->commercial_support_url : null;
+	}
+
+	/**
+	 * Get the donation link.
+	 *
+	 * @return string|null Donation URL or null.
+	 */
+	public function get_donate_link() {
+		return filter_var( $this->donate_link, FILTER_VALIDATE_URL ) ? $this->donate_link : null;
 	}
 
 	/**

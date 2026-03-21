@@ -51,6 +51,31 @@ class Packages {
 	protected $fetcher;
 
 	/**
+	 * CSS class prefix for this asset type (e.g. 'plugin', 'theme', 'typo3-extension').
+	 */
+	protected $css_prefix;
+
+	/**
+	 * Singular display label (e.g. 'Plugin', 'Theme', 'Extension').
+	 */
+	protected $label;
+
+	/**
+	 * Plural display label (e.g. 'Plugins', 'Themes', 'Extensions').
+	 */
+	protected $label_plural;
+
+	/**
+	 * Search input placeholder / label text.
+	 */
+	protected $search_label;
+
+	/**
+	 * View directory prefix (e.g. 'wordpress', 'typo3').
+	 */
+	protected $view_prefix;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param array|string $config Platform config array, or legacy string asset type.
@@ -64,6 +89,11 @@ class Packages {
 		$this->asset_singular = rtrim( $this->asset_type, 's' );
 		$this->model_class    = $config['model_class'];
 		$this->fetcher        = $config['fetcher'] ?? null;
+		$this->css_prefix     = $config['css_prefix'] ?? $this->asset_singular;
+		$this->label          = $config['label'] ?? ucfirst( $this->asset_singular );
+		$this->label_plural   = $config['label_plural'] ?? ucfirst( $this->asset_type );
+		$this->search_label   = $config['search_label'] ?? 'Search ' . ucfirst( $this->asset_type );
+		$this->view_prefix    = $config['view_prefix'] ?? '';
 
 		$root = $config['root'] ?? '';
 		if ( '' !== $root ) {
@@ -106,10 +136,11 @@ class Packages {
 		];
 
 		return [
-			'asset_type'  => $asset_type,
-			'root'        => $root,
-			'model_class' => $model_map[ $asset_type ] ?? 'FairExplorer\Model\PluginInfo',
-			'fetcher'     => null,
+			'asset_type'   => $asset_type,
+			'root'         => $root,
+			'view_prefix'  => 'wordpress',
+			'model_class'  => $model_map[ $asset_type ] ?? 'FairExplorer\Model\PluginInfo',
+			'fetcher'      => null,
 		];
 	}
 
@@ -389,11 +420,16 @@ class Packages {
 	protected function archive_the_content( $search_keyword ) {
 		ob_start();
 
+		$view_base = $this->view_prefix . DIRECTORY_SEPARATOR . $this->asset_type;
+
 		Utilities::include_file(
-			$this->asset_type . DIRECTORY_SEPARATOR . $this->asset_type . '-search-form.php',
+			$view_base . DIRECTORY_SEPARATOR . $this->asset_type . '-search-form.php',
 			[
 				'target_page_slug' => $this->target_page_slug,
 				'search_keyword'   => $search_keyword,
+				'css_prefix'       => $this->css_prefix,
+				'search_label'     => $this->search_label,
+				'label'            => $this->label,
 			]
 		);
 
@@ -409,13 +445,21 @@ class Packages {
 		}
 
 		Utilities::include_file(
-			$this->asset_type . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . $this->asset_type . '.php',
+			$view_base . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . $this->asset_type . '.php',
 			[
 				'target_page_slug'            => $this->target_page_slug,
 				$this->asset_type . '_result' => $this->api_response->$results_property,
+				'results'                     => $this->api_response->$results_property,
 				'current_page'                => max( 1, get_query_var( 'paged' ) ),
 				'total_results'               => $this->api_response->info['results'],
 				'total_pages'                 => ceil( $this->api_response->info['results'] / $this->default_search_results_per_page ),
+				'css_prefix'                  => $this->css_prefix,
+				'label'                       => $this->label,
+				'label_plural'                => $this->label_plural,
+				'model_class'                 => $this->model_class,
+				'asset_type'                  => $this->asset_type,
+				'asset_singular'              => $this->asset_singular,
+				'view_prefix'                 => $this->view_prefix,
 			]
 		);
 
@@ -438,10 +482,16 @@ class Packages {
 		$model_class = $this->model_class;
 		$asset_info  = new $model_class( $this->api_response );
 
+		$view_base = $this->view_prefix . DIRECTORY_SEPARATOR . $this->asset_type;
+
 		Utilities::include_file(
-			$this->asset_type . DIRECTORY_SEPARATOR . 'single' . DIRECTORY_SEPARATOR . $this->asset_singular . '.php',
+			$view_base . DIRECTORY_SEPARATOR . 'single' . DIRECTORY_SEPARATOR . $this->asset_singular . '.php',
 			[
 				$this->asset_singular . '_info' => $asset_info,
+				'asset_info'                    => $asset_info,
+				'css_prefix'                    => $this->css_prefix,
+				'asset_type'                    => $this->asset_type,
+				'label'                         => $this->label,
 			]
 		);
 

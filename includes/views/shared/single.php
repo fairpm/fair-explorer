@@ -1,22 +1,20 @@
 <?php
-/**
- * FairExplorer Theme Card (Single View)
- *
- * Displays a single theme's details, sections, meta, and ratings in an accessible, translatable, and visually polished layout.
- *
- * @package FairExplorer
- */
-$theme_info = $args['theme_info'] ?? null;
-if ( ! $theme_info ) {
+$asset_info        = $args['asset_info'] ?? null;
+$css_prefix        = $args['css_prefix'] ?? '';
+$asset_type        = $args['asset_type'] ?? '';
+$label             = $args['label'] ?? '';
+$banner_url        = $args['banner_url'] ?? '';
+$show_preview      = $args['show_preview'] ?? false;
+$show_fair_badge   = $args['show_fair_badge'] ?? false;
+$show_tags_sidebar = $args['show_tags_sidebar'] ?? false;
+$pre_meta_html     = $args['pre_meta_html'] ?? '';
+$meta_data         = $args['meta_data'] ?? [];
+
+if ( ! $asset_info ) {
 	return;
 }
 
-$theme_screenshot = $theme_info->get_screenshot_url();
-if ( empty( $theme_screenshot ) ) {
-	$theme_screenshot = AE_DIR_URL . 'assets/images/default-banner.svg';
-}
-
-$sections    = $theme_info->get_sections();
+$sections    = $asset_info->get_sections();
 $description = '';
 if ( isset( $sections['description'] ) ) {
 	$description = $sections['description'];
@@ -27,33 +25,40 @@ if ( isset( $sections['description'] ) ) {
 } elseif ( isset( $sections['faq'] ) ) {
 	$description = $sections['faq'];
 } else {
-	$description = $theme_info->get_description();
+	$description = $asset_info->get_description();
 }
+
+$author_display = $asset_info->get_author_display_name();
 ?>
-<div class="single-theme-card">
+<div class="single-<?php echo esc_attr( $css_prefix ); ?>-card">
 	<banner class="entry-banner">
-		<img class="theme-banner" src="<?php echo esc_url( $theme_screenshot ); ?>" alt="Theme Banner" fetchpriority="high">
+		<img class="<?php echo esc_attr( $css_prefix ); ?>-banner" src="<?php echo esc_url( $banner_url ); ?>" alt="<?php echo esc_attr( $label ); ?> Banner" fetchpriority="high">
 	</banner>
 	<header class="entry-header">
 		<div class="entry-title">
-			<h2 class="theme-title"><?php echo esc_html( $theme_info->get_name() ); ?></h2>
-			<p class="theme-author">by <?php echo esc_html( $theme_info->get_author( 'display_name' ) ); ?></p>
+			<h2 class="<?php echo esc_attr( $css_prefix ); ?>-title"><?php echo esc_html( $asset_info->get_name() ); ?></h2>
+			<p class="<?php echo esc_attr( $css_prefix ); ?>-author">by <?php echo esc_html( $author_display ); ?></p>
+			<?php if ( $show_fair_badge ) : ?>
+				<p class="<?php echo esc_attr( $css_prefix ); ?>-fair"><?php esc_html_e( 'This plugin is available via FAIR repository.', 'fair-explorer' ); ?></p>
+			<?php endif; ?>
 		</div>
-		<div class="entry-preview">
-			<?php
-			$theme_slug  = $theme_info->get_slug();
-			$preview_url = '';
-			if ( $theme_slug ) {
-				$theme_zip_url = $theme_info->get_download_link();
-				$preview_url   = FairExplorer\Controller\Playground::get_playground_url( [ 'theme' => $theme_zip_url ] );
-			}
-			?>
-			<a href="<?php echo esc_url( $preview_url ); ?>" class="button button-primary" target="_blank" rel="noopener noreferrer">
-				<span class="dashicons dashicons-visibility"></span> <?php esc_html_e( 'Preview', 'fair-explorer' ); ?>
-			</a>
-		</div>
+		<?php if ( $show_preview ) : ?>
+			<div class="entry-preview">
+				<?php
+				$theme_slug  = $asset_info->get_slug();
+				$preview_url = '';
+				if ( $theme_slug ) {
+					$zip_url     = $asset_info->get_download_link();
+					$preview_url = FairExplorer\Controller\WordPress\Playground::get_playground_url( [ 'theme' => $zip_url ] );
+				}
+				?>
+				<a href="<?php echo esc_url( $preview_url ); ?>" class="button button-primary" target="_blank" rel="noopener noreferrer">
+					<span class="dashicons dashicons-visibility"></span> <?php esc_html_e( 'Preview', 'fair-explorer' ); ?>
+				</a>
+			</div>
+		<?php endif; ?>
 		<div class="entry-download">
-			<a href="<?php echo esc_url( $theme_info->get_download_link() ); ?>" class="button button-primary" download rel="noopener noreferrer"><span class="dashicons dashicons-download"></span> <?php esc_html_e( 'Download', 'fair-explorer' ); ?></a>
+			<a href="<?php echo esc_url( $asset_info->get_download_link() ); ?>" class="button button-primary" download rel="noopener noreferrer"><span class="dashicons dashicons-download"></span> <?php esc_html_e( 'Download', 'fair-explorer' ); ?></a>
 		</div>
 	</header>
 	<div class="entry-main">
@@ -80,6 +85,7 @@ if ( isset( $sections['description'] ) ) {
 						return $pos_a - $pos_b;
 					}
 				);
+
 				$is_first = true;
 				foreach ( $sections as $section => $content ) {
 					echo '<details class="section-item" id="section-item-' . esc_attr( $section ) . '" ' . esc_attr( ( $is_first ) ? 'open' : '' ) . '>';
@@ -93,17 +99,14 @@ if ( isset( $sections['description'] ) ) {
 			}
 			?>
 		</article>
-		<aside aria-label="<?php esc_attr_e( 'Theme Metadata', 'fair-explorer' ); ?>">
+		<aside aria-label="<?php echo esc_attr( sprintf( /* translators: %s: asset type label */ __( '%s Metadata', 'fair-explorer' ), $label ) ); ?>">
 			<ul>
 				<?php
-				$meta_data = [
-					'Version'         => $theme_info->get_version(),
-					'Active Installs' => $theme_info->get_active_installs(),
-					'Last Updated'    => $theme_info->get_last_updated(),
-					'Requires WP'     => $theme_info->get_requires(),
-					'Tested'          => $theme_info->get_tested(),
-					'Requires PHP'    => $theme_info->get_requires_php(),
-				];
+				// Pre-meta HTML (FAIR DID, extension key, etc.)
+				if ( '' !== $pre_meta_html ) {
+					echo wp_kses_post( $pre_meta_html );
+				}
+
 				foreach ( $meta_data as $key => $value ) {
 					if ( empty( $value ) ) {
 						continue;
@@ -111,8 +114,7 @@ if ( isset( $sections['description'] ) ) {
 					if ( is_array( $value ) ) {
 						$value = implode( ', ', $value );
 					}
-					$label = esc_html( $key );
-					echo '<li class="theme-meta-item"><strong>' . $label . ':</strong> ' . esc_html( $value ) . '</li>';
+					echo '<li class="' . esc_attr( $css_prefix ) . '-meta-item"><strong>' . esc_html( $key ) . ':</strong> ' . esc_html( $value ) . '</li>';
 				}
 				?>
 			</ul>
@@ -120,7 +122,7 @@ if ( isset( $sections['description'] ) ) {
 				<?php
 				$total   = 0;
 				$sum     = 0;
-				$ratings = $theme_info->get_ratings();
+				$ratings = $asset_info->get_ratings();
 				foreach ( $ratings as $star => $num ) {
 					$total += (int) $num;
 					$sum   += (int) $num * (int) $star;
@@ -145,15 +147,17 @@ if ( isset( $sections['description'] ) ) {
 					?>
 				</ul>
 			</div>
-			<div class="entry-tags">
-				<ul class="theme-tags">
-					<?php
-					foreach ( $theme_info->get_tags() as $theme_tag ) {
-						echo '<li class="theme-tag"><span class="screen-reader-text">' . esc_html__( 'Tag:', 'fair-explorer' ) . ' </span>' . esc_html( $theme_tag ) . '</li>';
-					}
-					?>
-				</ul>
-			</div>
+			<?php if ( $show_tags_sidebar ) : ?>
+				<div class="entry-tags">
+					<ul class="<?php echo esc_attr( $css_prefix ); ?>-tags">
+						<?php
+						foreach ( $asset_info->get_tags() as $asset_tag ) {
+							echo '<li class="' . esc_attr( $css_prefix ) . '-tag"><span class="screen-reader-text">' . esc_html__( 'Tag:', 'fair-explorer' ) . ' </span>' . esc_html( $asset_tag ) . '</li>';
+						}
+						?>
+					</ul>
+				</div>
+			<?php endif; ?>
 		</aside>
 	</div>
 </div>

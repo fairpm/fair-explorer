@@ -1,13 +1,14 @@
 # Fair-Explorer
 
-A WordPress plugin that provides a comprehensive repository browser for exploring and managing WordPress plugins and themes from the FAIR ecosystem.
+A WordPress plugin that provides a comprehensive repository browser for exploring and managing WordPress plugins, themes, and TYPO3 extensions from the FAIR ecosystem.
 
 ## Features
 
-- 🔍 **Package Search & Browse** - Search and explore WordPress plugins and themes with detailed information
+- 🔍 **Package Search & Browse** - Search and explore WordPress plugins, themes, and TYPO3 extensions with detailed information
 - 🎨 **Theme Discovery** - Browse and preview WordPress themes with live demos
-- � **Plugin Management** - Discover and explore WordPress plugins
-- �🛒 **Cart Functionality** - Add packages to cart with persistent storage via cookies
+- 🔌 **Plugin Management** - Discover and explore WordPress plugins
+- 🧩 **TYPO3 Extensions** - Browse and search TYPO3 extensions from the extensions API
+- 🛒 **Cart Functionality** - Add packages to cart with persistent storage via cookies
 - 🎮 **WordPress Playground Integration** - Generate blueprint URLs for instant WordPress demos
 - ✨ **Interactive UI** - Modern lightbox galleries, floating cart button, and smooth animations
 - 📱 **Responsive Design** - Mobile-friendly interface with SCSS-powered styling
@@ -20,7 +21,7 @@ A WordPress plugin that provides a comprehensive repository browser for explorin
 1. Download or clone this repository
 2. Place the `fair-explorer` folder in your `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Create pages with slugs `plugins` and `themes` for the archive pages
+4. Create pages with slugs `plugins`, `themes`, and optionally set up TYPO3 extension routes for the archive pages
 
 ## Template Hierarchy & Customization
 
@@ -30,41 +31,42 @@ Fair-Explorer supports WordPress template hierarchy, allowing themes to override
 
 1. **Child Theme** (highest priority): `wp-content/themes/child-theme/fair-explorer/[template-file]`
 2. **Parent Theme**: `wp-content/themes/active-theme/fair-explorer/[template-file]`  
-3. **Plugin Default** (fallback): `wp-content/plugins/fair-explorer/includes/view/[template-file]`
+3. **Plugin Default** (fallback): `wp-content/plugins/fair-explorer/includes/views/[template-file]`
 
 ### Available Templates
 
 You can override these template files in your theme:
 
-**Search Forms:**
-- `themes-search-form.php` - Theme search form
-- `plugins-search-form.php` - Plugin search form
+**Plugins:**
+- `plugins/plugins-search-form.php` - Plugin search form
+- `plugins/archive/plugins.php` - Plugins listing page
+- `plugins/archive/plugin.php` - Individual plugin card in the archive
+- `plugins/single/plugin.php` - Individual plugin display
 
-**Archive Templates:**
-- `archive/themes.php` - Themes listing page
-- `archive/plugins.php` - Plugins listing page
+**Themes:**
+- `themes/themes-search-form.php` - Theme search form
+- `themes/archive/themes.php` - Themes listing page
+- `themes/archive/theme.php` - Individual theme card in the archive
+- `themes/single/theme.php` - Individual theme display
 
-**Single Templates:**
-- `single/theme.php` - Individual theme display
-- `single/plugin.php` - Individual plugin display
+**TYPO3 Extensions:**
+- `extensions/extensions-search-form.php` - Extension search form
+- `extensions/archive/extensions.php` - Extensions listing page
+- `extensions/archive/extension.php` - Individual extension card in the archive
+- `extensions/single/extension.php` - Individual extension display
 
 ### Example Theme Override
 
 To customize the themes listing in your theme:
 
-1. Create folder: `wp-content/themes/your-theme/fair-explorer/`
-2. Copy: `wp-content/plugins/fair-explorer/includes/view/archive/themes.php`
-3. Paste to: `wp-content/themes/your-theme/fair-explorer/archive/themes.php`
+1. Create folder: `wp-content/themes/your-theme/fair-explorer/themes/archive/`
+2. Copy: `wp-content/plugins/fair-explorer/includes/views/themes/archive/themes.php`
+3. Paste to: `wp-content/themes/your-theme/fair-explorer/themes/archive/themes.php`
 4. Customize as needed
 
+Each overridable template receives an `$args` array with all the data it needs. The type-specific templates (e.g. `plugins/archive/plugins.php`) delegate to shared partials internally, but when you override a template, you have full control and can write completely custom markup.
+
 Your customizations will be preserved during plugin updates.
-
-## Installation
-
-1. Download or clone this repository
-2. Place the `fair-explorer` folder in your `/wp-content/plugins/` directory
-3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Create pages with slugs `plugins` and `themes` for the archive pages
 
 ## Configuration
 
@@ -83,6 +85,8 @@ Create WordPress pages with these exact slugs:
 - **plugins** - For the plugins archive and individual plugin pages
 - **themes** - For the themes archive and individual theme pages
 
+TYPO3 extensions use the hardcoded root `packages/typo3`, so the archive is served at `packages/typo3/extensions/`. Ensure a WordPress page exists at that path for the content to render on.
+
 
 ## URL Structure
 
@@ -95,6 +99,10 @@ With the default configuration, your URLs will be:
 **Themes:**
 - Archive: `yoursite.com/packages/themes/`
 - Individual: `yoursite.com/packages/themes/theme-name/`
+
+**TYPO3 Extensions:**
+- Archive: `yoursite.com/packages/typo3/extensions/`
+- Individual: `yoursite.com/packages/typo3/extensions/extension-name/`
 
 **REST API:**
 - Playground Blueprint: `yoursite.com/wp-json/fair-explorer/v1/playground/blueprint`
@@ -176,36 +184,56 @@ Returns a JSON blueprint compatible with WordPress Playground:
 ```
 fair-explorer/
 ├── includes/
-│   ├── controller/          # MVC Controllers
-│   │   ├── class-main.php      # Main plugin controller
-│   │   ├── class-packages.php  # Unified packages controller (themes & plugins)
-│   │   └── class-playground.php # WordPress Playground API
-│   ├── model/              # Data Models  
-│   │   ├── class-singleton.php   # Base singleton pattern
-│   │   ├── class-plugin-info.php # Plugin data model
-│   │   └── class-theme-info.php  # Theme data model
-│   ├── view/               # Template Files (Plugin Defaults)
-│   │   ├── archive/           # Archive page templates
-│   │   │   ├── plugins.php
-│   │   │   └── themes.php
-│   │   ├── single/            # Single item templates  
-│   │   │   ├── plugin.php
-│   │   │   └── theme.php
-│   │   ├── plugins-search-form.php
-│   │   └── themes-search-form.php
-│   ├── class-utilities.php    # Template hierarchy helper
-│   └── autoload.php           # PSR-4 autoloader
+│   ├── controller/              # MVC Controllers
+│   │   ├── class-main.php          # Main plugin controller
+│   │   ├── class-packages.php      # Unified packages controller (plugins, themes & extensions)
+│   │   ├── class-typo3.php         # TYPO3 extensions API fetcher
+│   │   └── class-playground.php    # WordPress Playground API
+│   ├── model/                   # Data Models
+│   │   ├── class-singleton.php     # Base singleton pattern
+│   │   ├── class-assetinfo.php     # Base asset model (shared properties & methods)
+│   │   ├── class-plugininfo.php    # Plugin data model
+│   │   ├── class-themeinfo.php     # Theme data model
+│   │   └── class-extensioninfo.php # TYPO3 extension data model
+│   ├── views/                   # Template Files (Plugin Defaults)
+│   │   ├── plugins/                # Plugin templates (overridable)
+│   │   │   ├── archive/
+│   │   │   │   ├── plugins.php
+│   │   │   │   └── plugin.php
+│   │   │   ├── single/
+│   │   │   │   └── plugin.php
+│   │   │   └── plugins-search-form.php
+│   │   ├── themes/                 # Theme templates (overridable)
+│   │   │   ├── archive/
+│   │   │   │   ├── themes.php
+│   │   │   │   └── theme.php
+│   │   │   ├── single/
+│   │   │   │   └── theme.php
+│   │   │   └── themes-search-form.php
+│   │   ├── extensions/             # TYPO3 extension templates (overridable)
+│   │   │   ├── archive/
+│   │   │   │   ├── extensions.php
+│   │   │   │   └── extension.php
+│   │   │   ├── single/
+│   │   │   │   └── extension.php
+│   │   │   └── extensions-search-form.php
+│   │   └── shared/                 # Shared partials (internal, not overridable)
+│   │       ├── archive-list.php       # Generic archive listing
+│   │       ├── archive-card.php       # Generic archive card
+│   │       ├── search-form.php        # Generic search form
+│   │       └── single.php             # Generic single view
+│   └── autoload.php             # PSR-4 autoloader
 ├── assets/
 │   ├── js/
-│   │   └── fair-explorer.js    # Main JavaScript (ES6 classes)
+│   │   └── fair-explorer.js     # Main JavaScript (ES6 classes)
 │   ├── scss/
-│   │   ├── fair-explorer.scss  # Main SCSS file
+│   │   ├── fair-explorer.scss   # Main SCSS file
 │   │   ├── _cart.scss           # Cart styling
 │   │   ├── _lightbox.scss       # Lightbox component
 │   │   └── _search.scss         # Search components
 │   └── css/
-│       └── fair-explorer.css   # Compiled CSS
-└── composer.json           # PHP dependencies and scripts
+│       └── fair-explorer.css    # Compiled CSS
+└── composer.json                # PHP dependencies and scripts
 ```
 
 
@@ -284,7 +312,7 @@ The cart system allows users to collect packages for later reference:
 ### Rewrite Rules Not Working
 
 1. Go to **Settings > Permalinks** and click "Save Changes"
-2. Ensure your pages have the correct slugs (`plugins`, `themes`)
+2. Ensure your pages have the correct slugs (`plugins`, `themes`, etc.)
 3. Check that `AE_ROOT` constant matches your URL structure
 4. Verify `Packages` class instances are properly initialized
 
