@@ -77,13 +77,15 @@ class Typo3 {
 	 * @return object|\WP_Error
 	 */
 	private static function fetch_archive( $endpoint, $args ) {
-		$params = array_filter( [
-			'q'        => $args['search'] ?? '',
-			'page'     => (int) ( $args['page'] ?? 0 ),
-			'per_page' => (int) ( $args['per_page'] ?? 0 ),
-		] );
+		$params = array_filter(
+			[
+				'q'        => $args['search'] ?? '',
+				'page'     => (int) ( $args['page'] ?? 0 ),
+				'per_page' => (int) ( $args['per_page'] ?? 0 ),
+			]
+		);
 
-		$url = add_query_arg( $params, $endpoint );
+		$url      = add_query_arg( $params, $endpoint );
 		$response = self::remote_get( $url );
 
 		if ( is_wp_error( $response ) ) {
@@ -118,7 +120,13 @@ class Typo3 {
 			);
 		}
 
-		$url      = add_query_arg( [ 'q' => $slug, 'per_page' => 50 ], $endpoint );
+		$url      = add_query_arg(
+			[
+				'q'        => $slug,
+				'per_page' => 50,
+			],
+			$endpoint
+		);
 		$response = self::remote_get( $url );
 
 		if ( is_wp_error( $response ) ) {
