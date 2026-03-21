@@ -1,10 +1,12 @@
 .archive-plugin-card,
-.archive-theme-card {
+.archive-theme-card,
+.archive-typo3-extension-card {
 	max-width: 1200px !important;
 	margin: 12px auto 0 auto;
 
 	.plugin-results-count,
-	.theme-results-count {
+	.theme-results-count,
+	.typo3-extension-results-count {
 		font-size: 16px;
 		line-height: 1.5;
 		color: #555;
@@ -12,7 +14,8 @@
 	}
 
 	.plugin-results,
-	.theme-results {
+	.theme-results,
+	.typo3-extension-results {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 32px;
@@ -23,7 +26,8 @@
 		padding: 0;
 
 		.plugin-card,
-		.theme-card {
+		.theme-card,
+		.typo3-extension-card {
 			background: #fff;
 			border: 1.5px solid #e3e6ea;
 			border-radius: 12px;
@@ -78,7 +82,8 @@
 					justify-content: center;
 
 					.plugin-icon,
-					.theme-icon {
+					.theme-icon,
+					.typo3-extension-icon {
 						width: 96px;
 						height: 96px;
 						border-radius: 8px;
@@ -92,7 +97,8 @@
 					flex: 1;
 
 					.plugin-title,
-					.theme-title {
+					.theme-title,
+					.typo3-extension-title {
 						font-size: 1.35em;
 						font-weight: 700;
 						color: #182b49;
@@ -112,7 +118,9 @@
 					.plugin-author,
 					.plugin-version,
 					.theme-author,
-					.theme-version {
+					.theme-version,
+					.typo3-extension-author,
+					.typo3-extension-version {
 						font-size: 1em;
 						color: #666;
 						margin: 0 0 4px 0;
@@ -231,7 +239,8 @@
 					margin: 8px 0 0 0;
 
 					ul.plugin-tags,
-					ul.theme-tags {
+					ul.theme-tags,
+					ul.typo3-extension-tags {
 						display: flex;
 						gap: 8px;
 						margin: 0;
@@ -240,7 +249,8 @@
 						flex-wrap: wrap;
 
 						.plugin-tag,
-						.theme-tag {
+						.theme-tag,
+						.typo3-extension-tag {
 							font-size: 0.85em;
 							padding: 3px 9px 4px;
 							border-radius: 4px;
@@ -394,7 +404,8 @@
 						gap: 4px;
 
 						.plugin-tag,
-						.theme-tag {
+						.theme-tag,
+						.typo3-extension-tag {
 							font-size: 11px;
 							padding: 2px 7px 3px;
 						}
@@ -431,7 +442,8 @@
 						gap: 2px;
 
 						.plugin-tag,
-						.theme-tag {
+						.theme-tag,
+						.typo3-extension-tag {
 							font-size: 10px;
 							padding: 1px 5px 2px;
 						}

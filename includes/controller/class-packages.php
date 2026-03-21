@@ -2,8 +2,8 @@
 /**
  * Class Packages
  *
- * Base controller class for package management (themes and plugins).
- * Contains common functionality shared between themes and plugins controllers.
+ * Base controller class for package management (themes, plugins, extensions, etc.).
+ * Contains common functionality shared between all asset type controllers.
  */
 
 namespace FairExplorer\Controller;
@@ -25,9 +25,14 @@ class Packages {
 	protected $default_search_results_per_page;
 
 	/**
-	 * Package type (themes or plugins)
+	 * Package type (themes, plugins, extensions, etc.)
 	 */
 	protected $asset_type;
+
+	/**
+	 * Singular form of the asset type (theme, plugin, extension, etc.)
+	 */
+	protected $asset_singular;
 
 	/**
 	 * Query variable name for single package pages
@@ -35,21 +40,39 @@ class Packages {
 	protected $asset_slug_var;
 
 	/**
+	 * FQCN of the model class for this asset type.
+	 */
+	protected $model_class;
+
+	/**
+	 * Optional custom fetcher callable.
+	 * Signature: callable(string $action, array $args): object|WP_Error
+	 */
+	protected $fetcher;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param string $asset_type The package type ('themes' or 'plugins').
+	 * @param array|string $config Platform config array, or legacy string asset type.
 	 */
-	public function __construct( $asset_type = 'plugins' ) {
-		$this->asset_type = $asset_type;
+	public function __construct( $config = 'plugins' ) {
+		if ( is_string( $config ) ) {
+			$config = self::legacy_config( $config );
+		}
 
-		$root = defined( 'AE_ROOT' ) ? trim( AE_ROOT, '/' ) : '';
+		$this->asset_type     = $config['asset_type'];
+		$this->asset_singular = rtrim( $this->asset_type, 's' );
+		$this->model_class    = $config['model_class'];
+		$this->fetcher        = $config['fetcher'] ?? null;
+
+		$root = $config['root'] ?? '';
 		if ( '' !== $root ) {
-			$root .= '/';
+			$root = trim( $root, '/' ) . '/';
 		}
 
 		$this->target_page_slug                = $root . $this->asset_type;
 		$this->default_search_results_per_page = 10;
-		$this->asset_slug_var                  = 'themes' === $this->asset_type ? 'theme_slug' : 'plugin_slug';
+		$this->asset_slug_var                  = $config['slug_var'] ?? $this->asset_singular . '_slug';
 
 		add_filter( 'init', [ $this, 'init_permalinks' ] );
 		add_action( 'pre_get_posts', [ $this, 'pre_get_posts' ] );
@@ -66,6 +89,28 @@ class Packages {
 		add_filter( 'wpseo_opengraph_url', [ $this, 'wpseo_opengraph_url' ] );
 
 		add_action( 'init', [ $this, 'download_package' ] );
+	}
+
+	/**
+	 * Build a config array from a legacy string asset type.
+	 *
+	 * @param string $asset_type 'plugins' or 'themes'.
+	 * @return array Platform config array.
+	 */
+	protected static function legacy_config( $asset_type ) {
+		$root = defined( 'AE_ROOT' ) ? trim( AE_ROOT, '/' ) : '';
+
+		$model_map = [
+			'plugins' => 'FairExplorer\Model\PluginInfo',
+			'themes'  => 'FairExplorer\Model\ThemeInfo',
+		];
+
+		return [
+			'asset_type'  => $asset_type,
+			'root'        => $root,
+			'model_class' => $model_map[ $asset_type ] ?? 'FairExplorer\Model\PluginInfo',
+			'fetcher'     => null,
+		];
 	}
 
 	/**
@@ -141,31 +186,20 @@ class Packages {
 			return;
 		}
 
-		if ( 'themes' === $this->asset_type ) {
-			if ( ! function_exists( 'themes_api' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/theme.php';
-			}
-		} elseif ( 'plugins' === $this->asset_type ) {
-			if ( ! function_exists( 'plugins_api' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-			}
-		}
-
 		/**
 		 * The individual asset page.
 		 */
 		if ( ! empty( $asset_slug ) ) {
 			global $post;
 
-			$this->api_response = call_user_func(
-				'themes' === $this->asset_type ? 'themes_api' : 'plugins_api',
-				'themes' === $this->asset_type ? 'theme_information' : 'plugin_information',
+			$this->api_response = $this->fetch_api_data(
+				$this->asset_singular . '_information',
 				[
 					'slug'   => $asset_slug,
 					'fields' => 'all',
 				]
 			);
-			if ( false != $this->api_response && ! is_wp_error( $this->api_response ) ) {
+			if ( false !== $this->api_response && ! is_wp_error( $this->api_response ) ) {
 				$post->post_title   = $this->api_response->name ?? '';
 				$post->post_content = wp_strip_all_tags( $this->api_response->description ?? '' );
 				$post->post_excerpt = wp_strip_all_tags( $this->api_response->description ?? '' );
@@ -190,9 +224,8 @@ class Packages {
 				$search_args['browse'] = 'popular';
 			}
 
-			$this->api_response = call_user_func(
-				'themes' === $this->asset_type ? 'themes_api' : 'plugins_api',
-				'themes' === $this->asset_type ? 'query_themes' : 'query_plugins',
+			$this->api_response = $this->fetch_api_data(
+				'query_' . $this->asset_type,
 				$search_args
 			);
 
@@ -397,22 +430,51 @@ class Packages {
 	 */
 	protected function single_the_content( $asset_slug ) {
 		if ( is_wp_error( $this->api_response ) ) {
-			return wp_kses_post( wpautop( 'Error fetching ' . rtrim( $this->asset_type, 's' ) . ' information. Please try again later.' ) );
+			return wp_kses_post( wpautop( 'Error fetching ' . $this->asset_singular . ' information. Please try again later.' ) );
 		}
 
 		ob_start();
 
-		$model_class = 'themes' === $this->asset_type ? 'FairExplorer\Model\ThemeInfo' : 'FairExplorer\Model\PluginInfo';
+		$model_class = $this->model_class;
 		$asset_info  = new $model_class( $this->api_response );
 
 		Utilities::include_file(
-			$this->asset_type . DIRECTORY_SEPARATOR . 'single' . DIRECTORY_SEPARATOR . rtrim( $this->asset_type, 's' ) . '.php',
+			$this->asset_type . DIRECTORY_SEPARATOR . 'single' . DIRECTORY_SEPARATOR . $this->asset_singular . '.php',
 			[
-				rtrim( $this->asset_type, 's' ) . '_info' => $asset_info,
+				$this->asset_singular . '_info' => $asset_info,
 			]
 		);
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Fetch data from the appropriate API.
+	 *
+	 * If a custom fetcher is configured, delegates to it.
+	 * Otherwise falls back to the WordPress themes_api()/plugins_api().
+	 *
+	 * @param string $action API action (e.g. 'plugin_information', 'query_plugins').
+	 * @param array  $args   Arguments for the API call.
+	 * @return object|\WP_Error API response.
+	 */
+	protected function fetch_api_data( $action, $args ) {
+		if ( is_callable( $this->fetcher ) ) {
+			return call_user_func( $this->fetcher, $action, $args );
+		}
+
+		// WordPress core API fallback.
+		if ( 'themes' === $this->asset_type ) {
+			if ( ! function_exists( 'themes_api' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/theme.php';
+			}
+			return themes_api( $action, $args );
+		}
+
+		if ( ! function_exists( 'plugins_api' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+		}
+		return plugins_api( $action, $args );
 	}
 
 	/**
