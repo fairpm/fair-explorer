@@ -7,6 +7,9 @@
 
 namespace FairExplorer\Controller;
 
+use FairExplorer\Controller\Typo3\Typo3;
+use FairExplorer\Controller\WordPress\Playground;
+
 class Main extends \FairExplorer\Model\Singleton {
 	/**
 	 * Constructor.

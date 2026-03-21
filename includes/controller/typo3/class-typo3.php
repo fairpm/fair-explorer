@@ -6,7 +6,7 @@
  * Registers the extensions asset type and fetches data from AspireCloud.
  */
 
-namespace FairExplorer\Controller;
+namespace FairExplorer\Controller\Typo3;
 
 class Typo3 {
 	/**

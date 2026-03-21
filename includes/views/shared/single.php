@@ -49,7 +49,7 @@ $author_display = $asset_info->get_author_display_name();
 				$preview_url = '';
 				if ( $theme_slug ) {
 					$zip_url     = $asset_info->get_download_link();
-					$preview_url = FairExplorer\Controller\Playground::get_playground_url( [ 'theme' => $zip_url ] );
+					$preview_url = FairExplorer\Controller\WordPress\Playground::get_playground_url( [ 'theme' => $zip_url ] );
 				}
 				?>
 				<a href="<?php echo esc_url( $preview_url ); ?>" class="button button-primary" target="_blank" rel="noopener noreferrer">

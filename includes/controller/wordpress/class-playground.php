@@ -6,7 +6,7 @@
  * Handles REST API endpoints for generating WordPress Playground blueprints.
  */
 
-namespace FairExplorer\Controller;
+namespace FairExplorer\Controller\WordPress;
 
 use WP_REST_Request;
 use WP_REST_Response;
