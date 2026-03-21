@@ -35,6 +35,7 @@ class Main extends \FairExplorer\Model\Singleton {
 			[
 				'asset_type'   => 'plugins',
 				'root'         => $root,
+				'view_prefix'  => 'wordpress',
 				'model_class'  => 'FairExplorer\Model\PluginInfo',
 				'fetcher'      => null,
 				'css_prefix'   => 'plugin',
@@ -45,6 +46,7 @@ class Main extends \FairExplorer\Model\Singleton {
 			[
 				'asset_type'   => 'themes',
 				'root'         => $root,
+				'view_prefix'  => 'wordpress',
 				'model_class'  => 'FairExplorer\Model\ThemeInfo',
 				'fetcher'      => null,
 				'css_prefix'   => 'theme',
@@ -55,6 +57,7 @@ class Main extends \FairExplorer\Model\Singleton {
 			[
 				'asset_type'   => 'extensions',
 				'root'         => 'packages/typo3',
+				'view_prefix'  => 'typo3',
 				'slug_var'     => 'extension_slug',
 				'model_class'  => 'FairExplorer\Model\ExtensionInfo',
 				'fetcher'      => [ Typo3::class, 'fetch' ],

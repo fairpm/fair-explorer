@@ -10,6 +10,7 @@ $label_plural     = $args['label_plural'] ?? '';
 $model_class      = $args['model_class'] ?? '';
 $asset_type       = $args['asset_type'] ?? '';
 $asset_singular   = $args['asset_singular'] ?? '';
+$view_prefix      = $args['view_prefix'] ?? '';
 ?>
 <div class="archive-<?php echo esc_attr( $css_prefix ); ?>-card">
 	<div class="<?php echo esc_attr( $css_prefix ); ?>-results-count">
@@ -46,7 +47,7 @@ $asset_singular   = $args['asset_singular'] ?? '';
 		foreach ( $results as $result ) {
 			$asset_info = new $model_class( $result );
 			\FairExplorer\Controller\Utilities::include_file(
-				$asset_type . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . $asset_singular . '.php',
+				$view_prefix . DIRECTORY_SEPARATOR . $asset_type . DIRECTORY_SEPARATOR . 'archive' . DIRECTORY_SEPARATOR . $asset_singular . '.php',
 				[
 					'target_page_slug'        => $target_page_slug,
 					$asset_singular . '_info' => $asset_info,
