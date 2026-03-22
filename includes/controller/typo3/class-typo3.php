@@ -12,7 +12,7 @@ class Typo3 {
 	/**
 	 * Default AspireCloud API base URL.
 	 */
-	const DEFAULT_API_URL = 'https://api.aspirecloud.net';
+	const DEFAULT_API_URL = 'https://fair.typo3.com';
 
 	/**
 	 * Get the AspireCloud API base URL.

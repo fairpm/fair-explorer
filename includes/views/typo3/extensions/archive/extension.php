@@ -2,7 +2,8 @@
 $args['asset_info'] = $args['asset_info'] ?? $args['extension_info'] ?? null;
 $args['css_prefix'] = $args['css_prefix'] ?? 'typo3-extension';
 $args['asset_type']           = $args['asset_type'] ?? 'extensions';
-$args['show_active_installs'] = true;
+$args['show_active_installs'] = false;
+$args['show_fair_badge']      = false;
 
 $asset_info = $args['asset_info'] ?? $args['extension_info'] ?? null;
 if ( $asset_info ) {

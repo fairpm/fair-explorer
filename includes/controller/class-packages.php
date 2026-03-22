@@ -128,7 +128,8 @@ class Packages {
 	 * @return array Platform config array.
 	 */
 	protected static function legacy_config( $asset_type ) {
-		$root = defined( 'AE_ROOT' ) ? trim( AE_ROOT, '/' ) : '';
+		$base = defined( 'AE_ROOT' ) ? trim( AE_ROOT, '/' ) : '';
+		$root = '' !== $base ? $base . '/wordpress' : '';
 
 		$model_map = [
 			'plugins' => 'FairExplorer\Model\PluginInfo',
@@ -230,7 +231,7 @@ class Packages {
 					'fields' => 'all',
 				]
 			);
-			if ( false !== $this->api_response && ! is_wp_error( $this->api_response ) ) {
+			if ( false !== $this->api_response && ! is_wp_error( $this->api_response ) && $post instanceof \WP_Post ) {
 				$post->post_title   = $this->api_response->name ?? '';
 				$post->post_content = wp_strip_all_tags( $this->api_response->description ?? '' );
 				$post->post_excerpt = wp_strip_all_tags( $this->api_response->description ?? '' );

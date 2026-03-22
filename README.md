@@ -75,17 +75,29 @@ Your customizations will be preserved during plugin updates.
 Add these constants to your `wp-config.php` file:
 
 ```php
-// Root path for URL structure (optional, defaults to empty)
-define( 'AE_ROOT', 'packages/' )
+// Base path prefix for all platforms (optional, defaults to empty)
+define( 'AE_ROOT', 'packages' );
 ```
+
+When `AE_ROOT` is set, each platform's root is built as `AE_ROOT/{platform}`:
+- WordPress plugins/themes → `packages/wordpress/plugins`, `packages/wordpress/themes`
+- TYPO3 extensions → `packages/typo3/extensions`
+
+When `AE_ROOT` is not defined, all asset types live at the site root (e.g. `/plugins/`, `/themes/`, `/extensions/`).
 
 ### Required Pages
 
-Create WordPress pages with these exact slugs:
-- **plugins** - For the plugins archive and individual plugin pages
-- **themes** - For the themes archive and individual theme pages
+Create WordPress pages matching each platform's URL structure:
 
-TYPO3 extensions use the hardcoded root `packages/typo3`, so the archive is served at `packages/typo3/extensions/`. Ensure a WordPress page exists at that path for the content to render on.
+**Without `AE_ROOT`:**
+- **plugins** - For the plugins archive
+- **themes** - For the themes archive
+- **extensions** - For the TYPO3 extensions archive
+
+**With `AE_ROOT = 'packages'`:**
+- **packages → wordpress → plugins**
+- **packages → wordpress → themes**
+- **packages → typo3 → extensions**
 
 
 ## URL Structure
