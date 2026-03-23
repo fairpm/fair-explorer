@@ -6,6 +6,7 @@ $asset_type            = $args['asset_type'] ?? '';
 $show_active_installs  = $args['show_active_installs'] ?? false;
 $show_cart             = $args['show_cart'] ?? false;
 $show_preview          = $args['show_preview'] ?? false;
+$show_fair_badge       = $args['show_fair_badge'] ?? true;
 $preview_url           = $args['preview_url'] ?? '';
 $pre_footer_html       = $args['pre_footer_html'] ?? '';
 
@@ -159,7 +160,7 @@ $author_display = $asset_info->get_author_display_name();
 				?>
 			</ul>
 		</div>
-		<?php if ( $is_fair ) : ?>
+		<?php if ( $is_fair && $show_fair_badge ) : ?>
 			<div class="fair-badge">
 				<p><?php esc_html_e( 'This plugin is available via FAIR repository.', 'fair-explorer' ); ?></p>
 			</div>

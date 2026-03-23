@@ -32,12 +32,12 @@ class Main extends \FairExplorer\Model\Singleton {
 	 * @return array[] List of platform config arrays.
 	 */
 	public static function get_platforms() {
-		$root = defined( 'AE_ROOT' ) ? trim( AE_ROOT, '/' ) : '';
+		$base = defined( 'AE_ROOT' ) ? trim( AE_ROOT, '/' ) : '';
 
 		$platforms = [
 			[
 				'asset_type'   => 'plugins',
-				'root'         => $root,
+				'root'         => self::build_root( $base, 'wordpress' ),
 				'view_prefix'  => 'wordpress',
 				'model_class'  => 'FairExplorer\Model\PluginInfo',
 				'fetcher'      => null,
@@ -48,7 +48,7 @@ class Main extends \FairExplorer\Model\Singleton {
 			],
 			[
 				'asset_type'   => 'themes',
-				'root'         => $root,
+				'root'         => self::build_root( $base, 'wordpress' ),
 				'view_prefix'  => 'wordpress',
 				'model_class'  => 'FairExplorer\Model\ThemeInfo',
 				'fetcher'      => null,
@@ -59,7 +59,7 @@ class Main extends \FairExplorer\Model\Singleton {
 			],
 			[
 				'asset_type'   => 'extensions',
-				'root'         => 'packages/typo3',
+				'root'         => self::build_root( $base, 'typo3' ),
 				'view_prefix'  => 'typo3',
 				'slug_var'     => 'extension_slug',
 				'model_class'  => 'FairExplorer\Model\ExtensionInfo',
@@ -84,6 +84,21 @@ class Main extends \FairExplorer\Model\Singleton {
 		 * @param array[] $platforms Default platform configs.
 		 */
 		return apply_filters( 'fair_explorer_platforms', $platforms );
+	}
+
+	/**
+	 * Build a root path from the AE_ROOT base and a platform segment.
+	 *
+	 * @param string $base     The AE_ROOT base prefix (e.g. 'packages').
+	 * @param string $platform The platform segment (e.g. 'wordpress', 'typo3').
+	 * @return string Combined root path, or empty string when no base is set.
+	 */
+	private static function build_root( $base, $platform ) {
+		if ( '' === $base ) {
+			return '';
+		}
+
+		return $base . '/' . $platform;
 	}
 
 	public function wp_enqueue_scripts() {
