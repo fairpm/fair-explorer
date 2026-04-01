@@ -7,8 +7,12 @@ $banner_url        = $args['banner_url'] ?? '';
 $show_preview      = $args['show_preview'] ?? false;
 $show_fair_badge   = $args['show_fair_badge'] ?? false;
 $show_tags_sidebar = $args['show_tags_sidebar'] ?? false;
-$pre_meta_html     = $args['pre_meta_html'] ?? '';
-$meta_data         = $args['meta_data'] ?? [];
+$pre_meta_html      = $args['pre_meta_html'] ?? '';
+$meta_data          = $args['meta_data'] ?? [];
+$sidebar_sections   = $args['sidebar_sections'] ?? [];
+$post_article_html  = $args['post_article_html'] ?? '';
+$show_ratings            = $args['show_ratings'] ?? true;
+$show_sections_accordion = $args['show_sections_accordion'] ?? true;
 
 if ( ! $asset_info ) {
 	return;
@@ -65,7 +69,7 @@ $author_display = $asset_info->get_author_display_name();
 		<article>
 			<?php
 			if ( is_array( $sections ) && count( $sections ) > 0 ) {
-				$priority_order = [
+				$priority_map = array_flip( [
 					'description',
 					'installation',
 					'screenshots',
@@ -74,31 +78,42 @@ $author_display = $asset_info->get_author_display_name();
 					'reviews',
 					'changelog',
 					'other_notes',
-				];
+				] );
 				uksort(
 					$sections,
-					function ( $a, $b ) use ( $priority_order ) {
-						$pos_a = array_search( $a, $priority_order, true );
-						$pos_b = array_search( $b, $priority_order, true );
-						$pos_a = ( false === $pos_a ) ? PHP_INT_MAX : $pos_a;
-						$pos_b = ( false === $pos_b ) ? PHP_INT_MAX : $pos_b;
+					function ( $a, $b ) use ( $priority_map ) {
+						$pos_a = $priority_map[ $a ] ?? PHP_INT_MAX;
+						$pos_b = $priority_map[ $b ] ?? PHP_INT_MAX;
 						return $pos_a - $pos_b;
 					}
 				);
 
-				$is_first = true;
-				foreach ( $sections as $section => $content ) {
-					echo '<details class="section-item" id="section-item-' . esc_attr( $section ) . '" ' . esc_attr( ( $is_first ) ? 'open' : '' ) . '>';
-						echo '<summary role="button" aria-expanded="' . esc_attr( ( $is_first ) ? 'true' : 'false' ) . '">' . esc_html( ucfirst( $section ) ) . '</summary>';
+				if ( $show_sections_accordion ) {
+					$is_first = true;
+					foreach ( $sections as $section => $content ) {
+						echo '<details class="section-item" id="section-item-' . esc_attr( $section ) . '" ' . esc_attr( ( $is_first ) ? 'open' : '' ) . '>';
+							echo '<summary role="button" aria-expanded="' . esc_attr( ( $is_first ) ? 'true' : 'false' ) . '">' . esc_html( ucfirst( $section ) ) . '</summary>';
+							echo '<div class="details-content" id="details-content-' . esc_attr( $section ) . '">' . wp_kses_post( $content ) . '</div>';
+						echo '</details>';
+						if ( $is_first ) {
+							$is_first = false;
+						}
+					}
+				} else {
+					foreach ( $sections as $section => $content ) {
+						echo '<div class="section-item" id="section-item-' . esc_attr( $section ) . '">';
 						echo '<div class="details-content" id="details-content-' . esc_attr( $section ) . '">' . wp_kses_post( $content ) . '</div>';
-					echo '</details>';
-					if ( $is_first ) {
-						$is_first = false;
+						echo '</div>';
 					}
 				}
 			}
 			?>
 		</article>
+		<?php
+		if ( '' !== $post_article_html ) {
+			echo wp_kses_post( $post_article_html );
+		}
+		?>
 		<aside aria-label="<?php echo esc_attr( sprintf( /* translators: %s: asset type label */ __( '%s Metadata', 'fair-explorer' ), $label ) ); ?>">
 			<ul>
 				<?php
@@ -118,6 +133,18 @@ $author_display = $asset_info->get_author_display_name();
 				}
 				?>
 			</ul>
+			<?php
+			foreach ( $sidebar_sections as $sidebar_section ) {
+				$section_class = ! empty( $sidebar_section['class'] ) ? ' ' . esc_attr( $sidebar_section['class'] ) : '';
+				echo '<div class="sidebar-section' . $section_class . '">';
+				if ( ! empty( $sidebar_section['title'] ) ) {
+					echo '<h3>' . esc_html( $sidebar_section['title'] ) . '</h3>';
+				}
+				echo wp_kses_post( $sidebar_section['html'] ?? '' );
+				echo '</div>';
+			}
+			?>
+			<?php if ( $show_ratings ) : ?>
 			<div class="ratings">
 				<?php
 				$total   = 0;
@@ -147,6 +174,7 @@ $author_display = $asset_info->get_author_display_name();
 					?>
 				</ul>
 			</div>
+			<?php endif; ?>
 			<?php if ( $show_tags_sidebar ) : ?>
 				<div class="entry-tags">
 					<ul class="<?php echo esc_attr( $css_prefix ); ?>-tags">

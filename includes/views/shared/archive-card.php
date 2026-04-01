@@ -78,7 +78,7 @@ $author_display = $asset_info->get_author_display_name();
 	</header>
 	<div class="entry-excerpt">
 		<p>
-			<?php echo esc_html( wp_trim_words( $has_screenshot ? $asset_info->get_description() : $asset_info->get_short_description(), 30 ) ); ?>
+			<?php echo esc_html( wp_trim_words( $has_screenshot ? $asset_info->get_description() : ( $asset_info->get_short_description() ?? $asset_info->get_description() ), 30 ) ); ?>
 		</p>
 	</div>
 	<footer>
