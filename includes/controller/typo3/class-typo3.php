@@ -196,7 +196,10 @@ class Typo3 {
 	 * @return array Transformed data matching ExtensionInfo fields.
 	 */
 	private static function transform_package( $package ) {
-		$releases       = $package['releases'] ?? [];
+		$releases = $package['releases'] ?? [];
+		usort( $releases, function ( $a, $b ) {
+			return version_compare( $b['version'] ?? '0', $a['version'] ?? '0' );
+		} );
 		$latest_release = ! empty( $releases ) ? $releases[0] : [];
 		$authors        = $package['authors'] ?? [];
 		$slug           = $package['slug'] ?? '';
@@ -210,24 +213,36 @@ class Typo3 {
 		// Collect unique TYPO3 compatibility values across all releases.
 		$compatibility = [];
 		foreach ( $releases as $release ) {
-			$typo3_req = $release['requires']['typo3'] ?? '';
+			$typo3_req = $release['requires']['env:typo3'] ?? '';
 			if ( '' !== $typo3_req && ! in_array( $typo3_req, $compatibility, true ) ) {
 				$compatibility[] = $typo3_req;
 			}
 		}
 
+		// Build sections from top-level description (TYPO3 API has no sections field).
+		$description = $package['description'] ?? '';
+		$sections    = [];
+		if ( '' !== $description ) {
+			$sections['description'] = $description;
+		}
+
 		$data = [
 			'name'          => $package['name'] ?? '',
 			'slug'          => $slug,
-			'description'   => $package['description'] ?? '',
+			'description'   => $description,
 			'author'        => ! empty( $authors ) ? [ 'display_name' => $authors[0]['name'] ?? '' ] : null,
 			'version'       => $latest_release['version'] ?? '',
 			'download_link' => $latest_release['artifacts']['package'][0]['url'] ?? '',
 			'requires_php'  => $latest_release['requires']['php'] ?? '',
 			'tags'          => $tags,
-			'sections'      => $package['sections'] ?? [],
+			'sections'      => $sections,
 			'extension_key' => $slug,
 			'compatibility' => $compatibility,
+			'license'       => $package['license'] ?? '',
+			'type'          => $package['type'] ?? '',
+			'authors'       => $authors,
+			'releases'      => $releases,
+			'security'      => $package['security'] ?? [],
 		];
 
 		if ( ! empty( $package['id'] ) ) {

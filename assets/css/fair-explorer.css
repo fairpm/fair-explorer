@@ -3920,4 +3920,139 @@
   }
 }
 
+/* Sidebar sections */
+.sidebar-section {
+  margin: 0 0 24px;
+  padding: 16px;
+  background: #f9fafb;
+  border: 1px solid #e3e6ea;
+  border-radius: 6px;
+}
+.sidebar-section h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #555;
+}
+.sidebar-section dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+}
+.sidebar-section dl dt {
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+.sidebar-section dl dd {
+  margin: 0;
+  color: #555;
+  word-break: break-word;
+}
+.sidebar-section dl dd code {
+  font-size: 12px;
+  background: #eef1f5;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* Sidebar authors */
+.sidebar-section .sidebar-authors {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar-section .sidebar-authors li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  background: none;
+  border-radius: 0;
+  text-align: left;
+}
+.sidebar-section .sidebar-authors li + li {
+  border-top: 1px solid #e3e6ea;
+}
+.sidebar-section .sidebar-authors .author-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #192b48;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.sidebar-section .sidebar-authors .author-name {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Releases table (inside sidebar-section) */
+table.typo3-releases-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+table.typo3-releases-table thead th {
+  text-align: left;
+  padding: 6px 8px;
+  background: #eef1f5;
+  border-bottom: 2px solid #ddd;
+  font-weight: 600;
+  font-size: 12px;
+  color: #333;
+}
+table.typo3-releases-table tbody td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #eee;
+  color: #555;
+  text-align: end;
+}
+table.typo3-releases-table tbody tr:hover {
+  background: #f0f2f5;
+}
+table.typo3-releases-table tbody td a {
+  color: #192b48;
+}
+table.typo3-releases-table tbody td .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+/* Archive card metadata definition list */
+.typo3-extension-card .typo3-extension-meta-dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  margin: 0 0 12px;
+  font-size: 13px;
+}
+.typo3-extension-card .typo3-extension-meta-dl dt {
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+.typo3-extension-card .typo3-extension-meta-dl dd {
+  margin: 0;
+  color: #555;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.typo3-extension-card .typo3-extension-meta-dl dd code {
+  font-size: 12px;
+  background: #eef1f5;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
 /*# sourceMappingURL=fair-explorer.css.map */
